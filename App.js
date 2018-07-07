@@ -31,7 +31,11 @@ export default class App extends Component<Props> {
     this.state = {
       showDraggable: true,
       dropZoneValues: null,
-      pan: new Animated.ValueXY()
+      pan: new Animated.ValueXY(),
+      panO: new Animated.ValueXY(),
+      panTw: new Animated.ValueXY(),
+      panTh: new Animated.ValueXY()
+
     };
 
     this.panResponder = PanResponder.create({
@@ -53,7 +57,69 @@ export default class App extends Component<Props> {
         }
       }
     });
+
+    this.panResponderO = PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderMove: Animated.event([null, {
+        dx: this.state.panO.x,
+        dy: this.state.panO.y
+      }]),
+      onPanResponderRelease: (e, gesture) => {
+        if (this.isDropZone(gesture)) {
+          // this.setState({
+          //   showDraggable: false
+          // });
+        } else {
+          Animated.spring(
+            this.state.panO,
+            { toValue: { x: 0, y: 0 } }
+          ).start();
+        }
+      }
+    });
+
+    this.panResponderTw = PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderMove: Animated.event([null, {
+        dx: this.state.panTw.x,
+        dy: this.state.panTh.y
+      }]),
+      onPanResponderRelease: (e, gesture) => {
+        if (this.isDropZone(gesture)) {
+          // this.setState({
+          //   showDraggable: false
+          // });
+        } else {
+          Animated.spring(
+            this.state.panTw,
+            { toValue: { x: 0, y: 0 } }
+          ).start();
+        }
+      }
+    });
+
+    this.panResponderTh = PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderMove: Animated.event([null, {
+        dx: this.state.panTh.x,
+        dy: this.state.panTh.y
+      }]),
+      onPanResponderRelease: (e, gesture) => {
+        if (this.isDropZone(gesture)) {
+          // this.setState({
+          //   showDraggable: false
+          // });
+        } else {
+          Animated.spring(
+            this.state.panTh,
+            { toValue: { x: 0, y: 0 } }
+          ).start();
+        }
+      }
+    });
   }
+
+  
 
   isDropZone(gesture) {
     var dz = this.state.dropZoneValues;
@@ -79,7 +145,7 @@ export default class App extends Component<Props> {
           />
           {/* <Text style={styles.text}>Drop me here!</Text> */}
         </View>
-          {this.renderDraggable()}
+        {this.renderDraggable()}
 
 
       </View>
@@ -96,22 +162,38 @@ export default class App extends Component<Props> {
             style={[this.state.pan.getLayout(), styles.circle]}>
             <Text style={styles.text}>Drag me!</Text>
           </Animated.View>
+
           <Animated.View
-            {...this.panResponder.panHandlers}
-            style={[this.state.pan.getLayout(), styles.circle]}>
-            <Text style={styles.text}>Drag me!</Text>
+            {...this.panResponderO.panHandlers}
+            style={[this.state.panO.getLayout()]}>
+            <Image
+              source={require('./cartridge.png')}
+              style={styles.iconStyling}
+            />
           </Animated.View>
           <Animated.View
-            {...this.panResponder.panHandlers}
-            style={[this.state.pan.getLayout(), styles.circle]}>
-            <Text style={styles.text}>Drag me!</Text>
+            {...this.panResponderTw.panHandlers}
+            style={[this.state.panTw.getLayout()]}>
+            <Image
+              source={require('./modem.png')}
+              style={styles.iconStyling}
+
+            />
           </Animated.View>
           <Animated.View
-            {...this.panResponder.panHandlers}
-            style={[this.state.pan.getLayout(), styles.circle]}>
-            <Text style={styles.text}>Drag me!</Text>
+            {...this.panResponderTh.panHandlers}
+            style={[this.state.panTh.getLayout()]}>
+            <Image
+              style={styles.iconStyling}
+
+              source={require('./printer.png')}
+            />
           </Animated.View>
         </View>
+
+
+
+
       );
     }
   }
@@ -164,5 +246,9 @@ let styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  iconStyling:{
+    height: 60,
+    width: 60
   }
 });
