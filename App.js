@@ -24,9 +24,14 @@ const instructions = Platform.select({
 });
 
 type Props = {};
+
+const printer = require('./printer.png');
+const cartridge= require('./cartridge.png');
+const modem = require('./modem.png');
 export default class App extends Component<Props> {
   constructor(props) {
     super(props);
+    this.dataDrag = [1,2,3,4];
 
     this.state = {
       showDraggable: true,
@@ -82,7 +87,7 @@ export default class App extends Component<Props> {
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: Animated.event([null, {
         dx: this.state.panTw.x,
-        dy: this.state.panTh.y
+        dy: this.state.panTw.y
       }]),
       onPanResponderRelease: (e, gesture) => {
         if (this.isDropZone(gesture)) {
@@ -167,7 +172,7 @@ export default class App extends Component<Props> {
             {...this.panResponderO.panHandlers}
             style={[this.state.panO.getLayout()]}>
             <Image
-              source={require('./cartridge.png')}
+              source={cartridge}
               style={styles.iconStyling}
             />
           </Animated.View>
@@ -175,7 +180,7 @@ export default class App extends Component<Props> {
             {...this.panResponderTw.panHandlers}
             style={[this.state.panTw.getLayout()]}>
             <Image
-              source={require('./modem.png')}
+              source={modem}
               style={styles.iconStyling}
 
             />
@@ -186,7 +191,7 @@ export default class App extends Component<Props> {
             <Image
               style={styles.iconStyling}
 
-              source={require('./printer.png')}
+              source={printer}
             />
           </Animated.View>
         </View>
